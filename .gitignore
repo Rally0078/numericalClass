@@ -1,5 +1,6 @@
 *.plt
 deprecated.ipynb
+deprecated.py
 30jan2024.ipynb
 *.pdf
 *.exe
