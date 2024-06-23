@@ -2,6 +2,7 @@
 #include <cmath>
 #include <Eigen/Dense>
 #include <chrono>
+#include <memory>
 #include <sciplot/sciplot.hpp>
 
 using Eigen::MatrixXd;
@@ -42,7 +43,7 @@ struct SolnObject{
     VectorXd timeArray;
 };
 
-SolnObject RK4(System* system, VectorXd x0, VectorXd params, double h=0.01, double tFin = 10.0){
+SolnObject RK4(std::shared_ptr<System> system, VectorXd x0, VectorXd params, double h=0.01, double tFin = 10.0){
     double t = 0;
     long N = (tFin + h)/h;
     MatrixXd result(x0.rows(), N);
@@ -75,9 +76,8 @@ int main(void){
     params << 9.8, 1.0;
 
     auto start = high_resolution_clock::now();
-    System *pendulum = new SimplePendulum();
+    std::shared_ptr<System> pendulum = std::make_shared<SimplePendulum>();
     SolnObject soln = RK4(pendulum, x0, params, 1e-4, 10.0);
-    delete pendulum;
     auto stop = high_resolution_clock::now();
     auto diff = duration_cast<milliseconds> (stop-start);
     std::cout<<"Time taken = "<< diff.count()/1000.0<<" seconds";
