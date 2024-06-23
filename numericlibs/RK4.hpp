@@ -10,13 +10,22 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-//Base class for all ODE systems
+//Base class for all ODE systems. To solve an ODE system, create a derived class of this class, and overload the operator().
+//Overloaded operator() must return a VectorXd containing the list of values evaluated by the ODE at a given time.
 class System {
     public:
     System() {};
+    //Overloaded operator(). Implement the virtual method in the derived classes with the appropriate return values.
+    //@param x0 contains the current values of the system
+    //@param t contains the current time
+    //@param params contains the parameters of the ODE
+    //@return returns a VectorXd containing the values of the ODE evaluated at that time with the given current values.
     virtual VectorXd operator() (VectorXd x0, double t, VectorXd params) = 0;
 };
-//Structure containing solution of the ODE system. Contains a MatrixXd result and a VectorXd timeArray
+/*Structure containing solution of the ODE system.
+@param result contains the results of the ODE solution.
+@param timeArray contains each of the time steps in the ODE solution.
+*/
 struct SolnObject{
     MatrixXd result;
     VectorXd timeArray;
