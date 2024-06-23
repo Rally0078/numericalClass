@@ -57,6 +57,16 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "dense": "cpp"
+        "dense": "cpp",
+        "bitset": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "iomanip": "cpp",
+        "numbers": "cpp",
+        "semaphore": "cpp",
+        "span": "cpp",
+        "text_encoding": "cpp",
+        "valarray": "cpp",
+        "variant": "cpp"
     }
 }
