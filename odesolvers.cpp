@@ -1,23 +1,18 @@
 #include <iostream>
-#include <cmath>
-#include <Eigen/Dense>
 #include <chrono>
-#include <memory>
 #include <sciplot/sciplot.hpp>
+#include <Eigen/Dense>
+#include <memory>
+#include "numericlibs/RK4.hpp"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using std::chrono::high_resolution_clock;
 using std::chrono::duration_cast;
 using std::chrono::milliseconds;
-
-class System {
-
-    public:
-    System() {};
-    virtual VectorXd operator() (VectorXd x0, double t, VectorXd params) = 0;
-};
-
+using Numericlib::System;
+using Numericlib::RK4;
+using Numericlib::SolnObject;
 
 class SimplePendulum : public System{
     public:
@@ -37,37 +32,6 @@ class SimplePendulum : public System{
         return result;
     }
 };
-
-struct SolnObject{
-    MatrixXd result;
-    VectorXd timeArray;
-};
-
-SolnObject RK4(std::shared_ptr<System> system, VectorXd x0, VectorXd params, double h=0.01, double tFin = 10.0){
-    double t = 0;
-    long N = (tFin + h)/h;
-    MatrixXd result(x0.rows(), N);
-    VectorXd timeArray(N);
-    long i = 0;
-    result.col(i) = x0;
-    timeArray(i) = 0.0;
-    while(t < tFin){
-        VectorXd k1 = (*system)(x0, t, params);
-        VectorXd k2 = (*system)(x0 + k1 * h/2.0, t + h/2.0, params);
-        VectorXd k3 = (*system)(x0 + k2 * h/2.0, t + h/2.0, params);
-        VectorXd k4 = (*system)(x0 + k3 * h, t + h, params);
-        x0 = x0 + h/6.0 * (k1 + 2.0 * k2 + 2.0 * k3 + k4);
-        i = i + 1;
-        t = t + h;
-        if(i < N){ 
-            result.col(i) = x0;
-            timeArray(i) = t;
-        }
-        else
-            break;
-    }
-    return SolnObject{result, timeArray};
-}
 
 int main(void){
     VectorXd x0(2);
