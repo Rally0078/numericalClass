@@ -27,3 +27,4 @@ Code from the "Computational Techniques in Physics" class in IISER Thiruvanantha
 ## To add:
 1. PDE Crank-Nicholson finite difference method
 2. PDE Galerkin finite element method
+3. A myriad of Monte-Carlo methods, including MCMC and integration.
